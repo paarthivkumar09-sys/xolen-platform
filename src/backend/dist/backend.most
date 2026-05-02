@@ -1,0 +1,226 @@
+// Version: 1.0.0
+type Booking__628731632 =
+  {
+    checkIn : Int;
+    checkOut : Int;
+    createdAt : Int;
+    customerId : Principal;
+    decisionDeadline : Int;
+    decisionStatus : DecisionStatus__795083923;
+    id : Nat;
+    invoiceUrl : ?Text;
+    paymentStatus : PaymentStatus__619471249;
+    propertyId : Nat;
+    serviceAddons : [ServiceAddon__660898275];
+    totalDays : Nat;
+    totalPrice : Nat
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type DecisionStatus__795083923 = {#accepted; #expired; #pending; #refunded};
+type DocType__630746602 = {#aadhaar; #drivingLicense; #other; #passport};
+type DocVerificationStatus__77837400 = {#pending; #rejected; #verified};
+type Document__73001605 =
+  {
+    bookingId : Nat;
+    docType : DocType__630746602;
+    fileBlob : ExternalBlob__671167343;
+    id : Nat;
+    ownerId : Principal;
+    uploadedAt : Int;
+    uploadedBy : UploadedBy__756539074;
+    verificationStatus : DocVerificationStatus__77837400
+  };
+type ExternalBlob__671167343 = Blob;
+type FurnishingType__858409303 = {#furnished; #semiFurnished; #unfurnished};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Location__350862516 =
+  {address : Text; city : Text; lat : Float; lng : Float};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type NotificationType__185411214 =
+  {
+    #bookingConfirmed;
+    #docUploaded;
+    #extendReminder;
+    #paymentSuccess;
+    #refundProcessed;
+    #visitReminder
+  };
+type Notification__766161334 =
+  {
+    createdAt : Int;
+    id : Nat;
+    message : Text;
+    notificationType : NotificationType__185411214;
+    read : Bool;
+    userId : Principal
+  };
+type PaymentMethod__40431956 = {#card; #upi; #wallet};
+type PaymentStatus__619471249 = {#failed; #pending; #success};
+type Payment__249316919 =
+  {
+    amount : Nat;
+    bookingId : Nat;
+    createdAt : Int;
+    holdReleaseAt : Int;
+    id : Nat;
+    paymentMethod : PaymentMethod__40431956;
+    status : PaymentStatus__619471249
+  };
+type PendingPayout__29882773 =
+  {
+    amount : Nat;
+    bookingId : Nat;
+    ownerId : Principal;
+    processed : Bool;
+    releaseAt : Int
+  };
+type PropertyStatus__714027913 = {#assigned; #pending; #rejected; #verified};
+type PropertyType__673523169 = {#oneBHK; #oneRK; #room; #threeBHK; #twoBHK};
+type Property__612470078 =
+  {
+    amenities : [Text];
+    assignedExecutiveId : ?Principal;
+    createdAt : Int;
+    description : Text;
+    furnishingType : FurnishingType__858409303;
+    id : Nat;
+    location : Location__350862516;
+    maxGuests : Nat;
+    monthlyRent : Nat;
+    ownerId : Principal;
+    perDayPrice : Nat;
+    photos : [ExternalBlob__671167343];
+    propertyType : PropertyType__673523169;
+    roomsAvailable : Nat;
+    status : PropertyStatus__714027913;
+    tenantType : TenantType__568480432;
+    totalRooms : Nat;
+    updatedAt : Int;
+    verificationNotes : ?Text
+  };
+type Rating__1029936912 =
+  {
+    bookingId : Nat;
+    createdAt : Int;
+    customerId : Principal;
+    id : Nat;
+    propertyId : Nat;
+    rating : Nat;
+    reviewText : Text
+  };
+type ServiceAddon__660898275 =
+  {price : Nat; serviceId : Nat; serviceName : Text};
+type ServiceCategory__964584854 =
+  {#acCleaning; #homeCleaning; #other; #setupKit};
+type Service__934483991 =
+  {
+    active : Bool;
+    category : ServiceCategory__964584854;
+    description : Text;
+    id : Nat;
+    name : Text;
+    price : Nat
+  };
+type TaskStatus__520503765 = {#completed; #inProgress; #pending};
+type TaskType__755343646 = {#customerCheckin; #propertyVerification};
+type TenantType__568480432 = {#all; #boys; #family; #girls};
+type UploadedBy__756539074 = {#customer; #executive};
+type UserProfile__1009003526 =
+  {
+    blacklisted : Bool;
+    createdAt : Int;
+    email : Text;
+    id : Principal;
+    name : Text;
+    phone : Text;
+    role : UserRole__887406725;
+    verificationStatus : VerificationStatus__887864905
+  };
+type UserRole__1073662873 = {#admin; #guest; #user};
+type UserRole__887406725 = {#admin; #customer; #executive; #owner};
+type VerificationStatus__887864905 =
+  {#pending; #rejected; #unverified; #verified};
+type VerificationTask__167547958 =
+  {
+    bookingId : ?Nat;
+    completedAt : ?Int;
+    createdAt : Int;
+    executiveId : Principal;
+    id : Nat;
+    notes : ?Text;
+    photos : [ExternalBlob__671167343];
+    propertyId : Nat;
+    status : TaskStatus__520503765;
+    taskType : TaskType__755343646
+  };
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1073662873>
+    };
+  stable bookings :
+    {
+      var root : Node__46230540<Nat, Booking__628731632>;
+      var size : Nat__490723111
+    };
+  stable documents :
+    {
+      var root : Node__46230540<Nat, Document__73001605>;
+      var size : Nat__490723111
+    };
+  stable nextBookingIdRef : {var val : Nat};
+  stable nextPaymentIdRef : {var val : Nat};
+  stable nextPropertyId : {var val : Nat};
+  stable notifications :
+    {
+      var root : Node__46230540<Nat, Notification__766161334>;
+      var size : Nat__490723111
+    };
+  stable payments :
+    {
+      var root : Node__46230540<Nat, Payment__249316919>;
+      var size : Nat__490723111
+    };
+  stable pendingPayouts :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?PendingPayout__29882773]];
+      var elementIndex : Nat__490723111
+    };
+  stable properties :
+    {
+      var root : Node__46230540<Nat, Property__612470078>;
+      var size : Nat__490723111
+    };
+  stable ratings :
+    {
+      var root : Node__46230540<Nat, Rating__1029936912>;
+      var size : Nat__490723111
+    };
+  stable services :
+    {
+      var root : Node__46230540<Nat, Service__934483991>;
+      var size : Nat__490723111
+    };
+  stable tasks :
+    {
+      var root : Node__46230540<Nat, VerificationTask__167547958>;
+      var size : Nat__490723111
+    };
+  stable userProfiles :
+    {
+      var root : Node__46230540<Principal, UserProfile__1009003526>;
+      var size : Nat__490723111
+    }
+};

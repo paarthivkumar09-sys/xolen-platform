@@ -1,0 +1,27 @@
+{
+  "overview": "XOLEN is a full-stack stay and services platform combining the best of OYO, Airbnb, and Urban Company. It features 4 panels — Customer App, Owner Panel, Admin Panel, and Executive Panel — with a unique instant-decision booking system where guests can get a 90% refund if unsatisfied within 30 minutes of visiting a property.",
+  "features": [
+    "Customer App with property search, booking flow, and instant-decision refund system",
+    "Owner Panel for property management, rent tracking, and tenant documents",
+    "Admin Panel with booking oversight, property approval workflow, and analytics",
+    "Executive Panel for field verification tasks, photo capture, and document collection",
+    "Property verification system with XOLEN Verified badge",
+    "15-day minimum stay with automated per-day pricing calculation",
+    "Simulated payment with 24-hour owner payout hold",
+    "In-app notifications for booking, payment, and visit reminders",
+    "Scarcity and trust psychology features (Only X rooms left, Most booked)",
+    "Mobile-first design with Orange/Blue theme inspired by Airbnb and OYO"
+  ],
+  "category": "marketplace",
+  "tags": [
+    "stay",
+    "rental",
+    "booking",
+    "property",
+    "marketplace",
+    "mobile-first",
+    "verification",
+    "india"
+  ],
+  "last_updated": "2026-05-02T18:14:32.387Z"
+}

@@ -1,0 +1,408 @@
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type VerificationTask = 
+ record {
+   bookingId: opt nat;
+   completedAt: opt int;
+   createdAt: int;
+   executiveId: principal;
+   id: nat;
+   notes: opt text;
+   photos: vec ExternalBlob;
+   propertyId: nat;
+   status: TaskStatus;
+   taskType: TaskType;
+ };
+type VerificationStatus = 
+ variant {
+   pending;
+   rejected;
+   unverified;
+   verified;
+ };
+type UserRole__1 = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserRole = 
+ variant {
+   admin;
+   customer;
+   executive;
+   owner;
+ };
+type UserProfileInput = 
+ record {
+   email: text;
+   name: text;
+   phone: text;
+   role: UserRole;
+ };
+type UserProfile = 
+ record {
+   blacklisted: bool;
+   createdAt: int;
+   email: text;
+   id: principal;
+   name: text;
+   phone: text;
+   role: UserRole;
+   verificationStatus: VerificationStatus;
+ };
+type UploadedBy = 
+ variant {
+   customer;
+   executive;
+ };
+type TenantType = 
+ variant {
+   all;
+   boys;
+   family;
+   girls;
+ };
+type TaskType = 
+ variant {
+   customerCheckin;
+   propertyVerification;
+ };
+type TaskStatus = 
+ variant {
+   completed;
+   inProgress;
+   pending;
+ };
+type TaskInput = 
+ record {
+   bookingId: opt nat;
+   executiveId: principal;
+   propertyId: nat;
+   taskType: TaskType;
+ };
+type ServiceInput = 
+ record {
+   category: ServiceCategory;
+   description: text;
+   name: text;
+   price: nat;
+ };
+type ServiceCategory = 
+ variant {
+   acCleaning;
+   homeCleaning;
+   other;
+   setupKit;
+ };
+type ServiceAddon = 
+ record {
+   price: nat;
+   serviceId: nat;
+   serviceName: text;
+ };
+type Service = 
+ record {
+   active: bool;
+   category: ServiceCategory;
+   description: text;
+   id: nat;
+   name: text;
+   price: nat;
+ };
+type RatingInput = 
+ record {
+   bookingId: nat;
+   propertyId: nat;
+   rating: nat;
+   reviewText: text;
+ };
+type Rating = 
+ record {
+   bookingId: nat;
+   createdAt: int;
+   customerId: principal;
+   id: nat;
+   propertyId: nat;
+   rating: nat;
+   reviewText: text;
+ };
+type PropertyType = 
+ variant {
+   oneBHK;
+   oneRK;
+   room;
+   threeBHK;
+   twoBHK;
+ };
+type PropertyStatus = 
+ variant {
+   assigned;
+   pending;
+   rejected;
+   verified;
+ };
+type PropertyInput = 
+ record {
+   amenities: vec text;
+   description: text;
+   furnishingType: FurnishingType;
+   location: Location;
+   maxGuests: nat;
+   monthlyRent: nat;
+   photos: vec ExternalBlob;
+   propertyType: PropertyType;
+   roomsAvailable: nat;
+   tenantType: TenantType;
+   totalRooms: nat;
+ };
+type PropertyFilter = 
+ record {
+   city: opt text;
+   maxPrice: opt nat;
+   minPrice: opt nat;
+   propertyType: opt PropertyType;
+   tenantType: opt TenantType;
+ };
+type Property = 
+ record {
+   amenities: vec text;
+   assignedExecutiveId: opt principal;
+   createdAt: int;
+   description: text;
+   furnishingType: FurnishingType;
+   id: nat;
+   location: Location;
+   maxGuests: nat;
+   monthlyRent: nat;
+   ownerId: principal;
+   perDayPrice: nat;
+   photos: vec ExternalBlob;
+   propertyType: PropertyType;
+   roomsAvailable: nat;
+   status: PropertyStatus;
+   tenantType: TenantType;
+   totalRooms: nat;
+   updatedAt: int;
+   verificationNotes: opt text;
+ };
+type PendingPayout = 
+ record {
+   amount: nat;
+   bookingId: nat;
+   ownerId: principal;
+   processed: bool;
+   releaseAt: int;
+ };
+type PaymentStatus = 
+ variant {
+   failed;
+   pending;
+   success;
+ };
+type PaymentMethod = 
+ variant {
+   card;
+   upi;
+   wallet;
+ };
+type PaymentInput = 
+ record {
+   amount: nat;
+   bookingId: nat;
+   paymentMethod: PaymentMethod;
+ };
+type Payment = 
+ record {
+   amount: nat;
+   bookingId: nat;
+   createdAt: int;
+   holdReleaseAt: int;
+   id: nat;
+   paymentMethod: PaymentMethod;
+   status: PaymentStatus;
+ };
+type OwnerEarnings = 
+ record {
+   activeBookings: nat;
+   pendingPayout: nat;
+   totalBookings: nat;
+   totalEarned: nat;
+ };
+type NotificationType = 
+ variant {
+   bookingConfirmed;
+   docUploaded;
+   extendReminder;
+   paymentSuccess;
+   refundProcessed;
+   visitReminder;
+ };
+type Notification = 
+ record {
+   createdAt: int;
+   id: nat;
+   message: text;
+   notificationType: NotificationType;
+   read: bool;
+   userId: principal;
+ };
+type Location = 
+ record {
+   address: text;
+   city: text;
+   lat: float64;
+   lng: float64;
+ };
+type FurnishingType = 
+ variant {
+   furnished;
+   semiFurnished;
+   unfurnished;
+ };
+type ExternalBlob = blob;
+type DocumentInput = 
+ record {
+   bookingId: nat;
+   docType: DocType;
+   fileBlob: ExternalBlob;
+   uploadedBy: UploadedBy;
+ };
+type Document = 
+ record {
+   bookingId: nat;
+   docType: DocType;
+   fileBlob: ExternalBlob;
+   id: nat;
+   ownerId: principal;
+   uploadedAt: int;
+   uploadedBy: UploadedBy;
+   verificationStatus: DocVerificationStatus;
+ };
+type DocVerificationStatus = 
+ variant {
+   pending;
+   rejected;
+   verified;
+ };
+type DocType = 
+ variant {
+   aadhaar;
+   drivingLicense;
+   other;
+   passport;
+ };
+type DecisionStatus = 
+ variant {
+   accepted;
+   expired;
+   pending;
+   refunded;
+ };
+type BookingInput = 
+ record {
+   checkIn: int;
+   propertyId: nat;
+   serviceAddonIds: vec nat;
+   totalDays: nat;
+ };
+type Booking = 
+ record {
+   checkIn: int;
+   checkOut: int;
+   createdAt: int;
+   customerId: principal;
+   decisionDeadline: int;
+   decisionStatus: DecisionStatus;
+   id: nat;
+   invoiceUrl: opt text;
+   paymentStatus: PaymentStatus;
+   propertyId: nat;
+   serviceAddons: vec ServiceAddon;
+   totalDays: nat;
+   totalPrice: nat;
+ };
+type AvailabilityResult = 
+ record {
+   available: bool;
+   nextAvailableFrom: opt int;
+ };
+type AdminAnalytics = 
+ record {
+   activeStays: nat;
+   pendingVerifications: nat;
+   refundsProcessed: nat;
+   totalBookings: nat;
+   totalProperties: nat;
+   totalRevenue: nat;
+   totalUsers: nat;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  _initializeAccessControl: () -> ();
+  approveProperty: (propertyId: nat, notes: opt text) -> ();
+  assignCallerUserRole: (user: principal, role: UserRole__1) -> ();
+  assignExecutive: (propertyId: nat, executiveId: principal) -> ();
+  blacklistUser: (userId: principal) -> ();
+  createBooking: (input: BookingInput) -> (Booking);
+  createDocument: (input: DocumentInput) -> (Document);
+  createPayment: (input: PaymentInput) -> (Payment);
+  createProperty: (input: PropertyInput) -> (Property);
+  createService: (input: ServiceInput) -> (Service);
+  createVerificationTask: (input: TaskInput) -> (VerificationTask);
+  getAdminAnalytics: () -> (AdminAnalytics) query;
+  getAdminBookings: () -> (vec Booking) query;
+  getAdminPayments: () -> (vec Payment) query;
+  getAdminProperties: () -> (vec Property) query;
+  getAdminUsers: () -> (vec UserProfile) query;
+  getBooking: (bookingId: nat) -> (opt Booking) query;
+  getBookingDocuments: (bookingId: nat) -> (vec Document) query;
+  getCallerUserProfile: () -> (opt UserProfile) query;
+  getCallerUserRole: () -> (UserRole__1) query;
+  getMyBookings: () -> (vec Booking) query;
+  getMyPayments: () -> (vec Payment) query;
+  getMyTasks: () -> (vec VerificationTask) query;
+  getNotifications: () -> (vec Notification) query;
+  getOwnerEarnings: () -> (OwnerEarnings) query;
+  getPendingPayouts: () -> (vec PendingPayout) query;
+  getProperties: (filter: opt PropertyFilter) -> (vec Property) query;
+  getProperty: (propertyId: nat) -> (opt Property) query;
+  getPropertyAvailability: (propertyId: nat, checkIn: int, totalDays: 
+   nat) -> (AvailabilityResult) query;
+  getPropertyRatings: (propertyId: nat) -> (vec Rating) query;
+  getServices: () -> (vec Service) query;
+  getUserProfile: (userId: principal) -> (opt UserProfile) query;
+  isCallerAdmin: () -> (bool) query;
+  markNotificationRead: (notificationId: nat) -> ();
+  markPayoutProcessed: (bookingId: nat) -> ();
+  processDecision: (bookingId: nat, decision: DecisionStatus) -> (Booking);
+  rejectProperty: (propertyId: nat, notes: text) -> ();
+  saveCallerUserProfile: (profile: UserProfileInput) -> ();
+  seedSampleBookings: (sampleCustomerId: principal) -> () oneway;
+  submitRating: (input: RatingInput) -> (Rating);
+  updateProperty: (propertyId: nat, input: PropertyInput) -> (opt Property);
+  updateTaskStatus: (taskId: nat, status: TaskStatus, notes: opt text) ->
+   (VerificationTask);
+  updateUserProfile: (input: UserProfileInput) -> (UserProfile);
+  uploadVerificationPhoto: (taskId: nat, photo: ExternalBlob) ->
+   (VerificationTask);
+}
